@@ -804,6 +804,17 @@ Optional argument DONE-HANDLER lambda will be run once load is complete."
                                  (cider-emit-interactive-eval-err-output err))
                                ()))
 
+(defun cider-eval-append-repl-handler (&optional buffer)
+  ""
+  (nrepl-make-response-handler (or buffer (current-buffer))
+                               (lambda (_buffer value)
+                                 (cider-repl-emit-result (cider-current-repl) value t t))
+                               (lambda (_buffer out)
+                                 (cider-emit-interactive-eval-output out))
+                               (lambda (_buffer err)
+                                 (cider-emit-interactive-eval-err-output err))
+                               ()))
+
 (defun cider-eval-print-with-comment-handler (buffer location comment-prefix)
   "Make a handler for evaluating and printing commented results in BUFFER.
 LOCATION is the location marker at which to insert.  COMMENT-PREFIX is the
